@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Data Display</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>ART INSTITUTE OF CHICAGO</h1>
+
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            
+            const apiUrl = 'https://api.artic.edu/api/v1/artworks';
+
+            
+            const tbody = document.querySelector('#data-table tbody');
+
+            try {
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                console.log (data?.data);
+                
+                const res = data?.data ?? [];
+                
+                res.map(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${item.title}</td><td>${item.artist_title}</td><td>${item.api_link}</td>`;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    </script>
+</body>
+</html>
